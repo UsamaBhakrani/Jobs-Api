@@ -31,4 +31,12 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+userSchema.methods.createJwtToken = function () {
+  return jwt.sign(
+    { userId: this._id, name: this.name },
+    process.env.JWT_SECRET,
+    { expiresIn: "30d" }
+  );
+};
+
 module.exports = mongoose.model("User", userSchema);
